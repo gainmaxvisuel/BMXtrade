@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BMX - Connexion</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 430px;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .logo-box {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 12px;
+            border-radius: 18px;
+            background: #111827;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .logo h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .logo p {
+            margin: 7px 0 0;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 22px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.07);
+        }
+
+        .card h2 {
+            margin: 0 0 7px;
+            font-size: 23px;
+        }
+
+        .subtitle {
+            margin: 0 0 24px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .phone-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        select,
+        input {
+            width: 100%;
+            height: 50px;
+            border: 1px solid #d1d5db;
+            border-radius: 11px;
+            padding: 0 14px;
+            font-size: 15px;
+            outline: none;
+            background: white;
+        }
+
+        select {
+            width: 105px;
+            padding: 0 8px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #111827;
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 48px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 18px;
+            color: #6b7280;
+        }
+
+        .forgot {
+            text-align: right;
+            margin-top: -7px;
+            margin-bottom: 20px;
+        }
+
+        .forgot a {
+            color: #111827;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .btn {
+            width: 100%;
+            height: 52px;
+            border: none;
+            border-radius: 12px;
+            background: #111827;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            margin-bottom: 18px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            display: block;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 22px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .register a {
+            color: #111827;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .security {
+            text-align: center;
+            margin-top: 20px;
+            color: #9ca3af;
+            font-size: 12px;
+        }
+
+        @media (max-width: 380px) {
+            .card {
+                padding: 24px 17px;
+            }
+
+            select {
+                width: 95px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="logo">
+        <div class="logo-box">BMX</div>
+        <h1>BMX</h1>
+        <p>Bienvenue sur votre espace</p>
+    </div>
+
+    <div class="card">
+
+        <h2>Connexion</h2>
+        <p class="subtitle">
+            Connectez-vous à votre compte BMX
+        </p>
+
+        <div id="message" class="message"></div>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <label for="phone">Numéro de téléphone</label>
+
+                <div class="phone-row">
+
+                    <select id="country" required>
+                        <option value="BF">🇧🇫 +226</option>
+                        <option value="BJ">🇧🇯 +229</option>
+                        <option value="TG">🇹🇬 +228</option>
+                        <option value="CI">🇨🇮 +225</option>
+                    </select>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        placeholder="70123456"
+                        autocomplete="tel"
+                        required
+                    >
+
+                </div>
+            </div>
+
+            <div class="field">
+
+                <label for="password">Mot de passe</label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Votre mot de passe"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="toggle-password"
+                        id="togglePassword"
+                        aria-label="Afficher le mot de passe"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div class="forgot">
+                <a href="forgot-password.html">
+                    Mot de passe oublié ?
+                </a>
+            </div>
+
+            <button
+                type="submit"
+                class="btn"
+                id="loginButton"
+            >
+                Se connecter
+            </button>
+
+        </form>
+
+        <div class="register">
+            Vous n'avez pas encore de compte ?
+            <a href="register.html">Créer un compte</a>
+        </div>
+
+    </div>
+
+    <div class="security">
+        🔒 Connexion sécurisée BMX
+    </div>
+
+</div>
+
+
+<script>
+
+    // ==========================================
+    // CONFIGURATION BMX
+    // ==========================================
+
+    const LOGIN_URL =
+        "https://rstftxtsqpstnvxyvadu.supabase.co/functions/v1/login";
+
+
+    // ==========================================
+    // ELEMENTS
+    // ==========================================
+
+    const loginForm = document.getElementById("loginForm");
+    const loginButton = document.getElementById("loginButton");
+    const message = document.getElementById("message");
+
+    const country = document.getElementById("country");
+    const phone = document.getElementById("phone");
+    const password = document.getElementById("password");
+
+    const togglePassword =
+        document.getElementById("togglePassword");
+
+
+    // ==========================================
+    // AFFICHAGE MESSAGE
+    // ==========================================
+
+    function showMessage(text, type) {
+
+        message.textContent = text;
+
+        message.className = "message " + type;
+    }
+
+
+    function hideMessage() {
+
+        message.textContent = "";
+
+        message.className = "message";
+    }
+
+
+    // ==========================================
+    // AFFICHER / MASQUER MOT DE PASSE
+    // ==========================================
+
+    togglePassword.addEventListener("click", function () {
+
+        if (password.type === "password") {
+
+            password.type = "text";
+
+            togglePassword.textContent = "🙈";
+
+        } else {
+
+            password.type = "password";
+
+            togglePassword.textContent = "👁";
+
+        }
+
+    });
+
+
+    // ==========================================
+    // NETTOYAGE DU NUMERO
+    // ==========================================
+
+    function cleanPhone(value) {
+
+        return value
+            .trim()
+            .replace(/\s+/g, "")
+            .replace(/^00/, "")
+            .replace(/^\+/, "");
+    }
+
+
+    // ==========================================
+    // CONNEXION
+    // ==========================================
+
+    loginForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        hideMessage();
+
+        const countryCode = country.value;
+
+        let phoneNumber = cleanPhone(phone.value);
+
+        const passwordValue = password.value;
+
+
+        // Vérification minimale
+
+        if (!phoneNumber) {
+
+            showMessage(
+                "Veuillez saisir votre numéro de téléphone.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        if (!passwordValue) {
+
+            showMessage(
+                "Veuillez saisir votre mot de passe.",
+                "error"
+            );
+
+            return;
+        }
+
+
+        // Ajouter l'indicatif si nécessaire
+
+        const dialCodes = {
+            BF: "226",
+            BJ: "229",
+            TG: "228",
+            CI: "225"
+        };
+
+
+        // Si l'utilisateur saisit seulement le numéro local
+        // exemple : 70123456
+
+        if (!phoneNumber.startsWith(dialCodes[countryCode])) {
+
+            phoneNumber =
+                dialCodes[countryCode] + phoneNumber;
+
+        }
+
+
+        // Le backend BMX utilise le format +XXXXXXXXXXX
+
+        phoneNumber = "+" + phoneNumber;
+
+
+        // Désactiver le bouton
+
+        loginButton.disabled = true;
+
+        loginButton.textContent = "Connexion...";
+
+
+        try {
+
+            const response = await fetch(LOGIN_URL, {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    country_code: countryCode,
+
+                    phone: phoneNumber,
+
+                    password: passwordValue
+
+                })
+
+            });
+
+
+            let data;
+
+            try {
+
+                data = await response.json();
+
+            } catch (jsonError) {
+
+                throw new Error(
+                    "Réponse invalide du serveur."
+                );
+
+            }
+
+
+            // ==========================================
+            // ERREUR SERVEUR
+            // ==========================================
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.message ||
+                    data.error ||
+                    "Numéro ou mot de passe incorrect."
+                );
+
+            }
+
+
+            // ==========================================
+            // VERIFICATION BMX
+            // ==========================================
+
+            if (!data.success || !data.token) {
+
+                throw new Error(
+                    data.message ||
+                    "Connexion impossible."
+                );
+
+            }
+
+
+            // ==========================================
+            // SAUVEGARDER LE TOKEN
+            // ==========================================
+
+            localStorage.setItem(
+                "bmx_token",
+                data.token
+            );
+
+
+            // Sauvegarder également les informations utilisateur
+
+            if (data.user) {
+
+                localStorage.setItem(
+                    "bmx_user",
+                    JSON.stringify(data.user)
+                );
+
+            }
+
+
+            // ==========================================
+            // MESSAGE DE SUCCES
+            // ==========================================
+
+            showMessage(
+                "Connexion réussie. Redirection...",
+                "success"
+            );
+
+
+            // ==========================================
+            // REDIRECTION
+            // ==========================================
+
+            setTimeout(function () {
+
+                window.location.href = "dashboard.html";
+
+            }, 700);
+
+
+        } catch (error) {
+
+            console.error(
+                "Erreur connexion BMX :",
+                error
+            );
+
+
+            showMessage(
+                error.message ||
+                "Une erreur est survenue. Veuillez réessayer.",
+                "error"
+            );
+
+
+            loginButton.disabled = false;
+
+            loginButton.textContent =
+                "Se connecter";
+
+        }
+
+    });
+
+</script>
+
+</body>
+</html>

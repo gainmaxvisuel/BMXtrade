@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BMX - Dépôt</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f6f9;
+            color: #111827;
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+
+        .header {
+            height: 64px;
+            background: #fff;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            padding: 0 17px;
+        }
+
+        .back {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 50%;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .header-title {
+            margin-left: 13px;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px 15px;
+        }
+
+        .intro {
+            margin-bottom: 18px;
+        }
+
+        .intro h2 {
+            margin: 0 0 6px;
+            font-size: 23px;
+        }
+
+        .intro p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .country-box {
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .country-flag {
+            font-size: 25px;
+        }
+
+        .country-name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .country-note {
+            margin-top: 3px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .operators {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .operator {
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 12px;
+            min-height: 58px;
+            padding: 10px;
+            cursor: pointer;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .operator.selected {
+            border: 2px solid #111827;
+            background: #f9fafb;
+        }
+
+        .operator-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 17px;
+        }
+
+        .operator-name {
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .field {
+            margin-bottom: 5px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .amount-wrapper {
+            position: relative;
+        }
+
+        .amount-wrapper input {
+            width: 100%;
+            height: 55px;
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            padding: 0 75px 0 15px;
+            font-size: 18px;
+            font-weight: 700;
+            outline: none;
+        }
+
+        .amount-wrapper input:focus {
+            border-color: #111827;
+        }
+
+        .currency {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .minimum {
+            margin-top: 7px;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        .submit {
+            width: 100%;
+            height: 54px;
+            border: none;
+            border-radius: 13px;
+            background: #111827;
+            color: white;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 18px;
+        }
+
+        .submit:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .message {
+            display: none;
+            padding: 13px;
+            border-radius: 11px;
+            font-size: 13px;
+            line-height: 1.45;
+            margin-bottom: 15px;
+        }
+
+        .message.error {
+            display: block;
+            background: #fef2f2;
+            color: #b91c1c;
+            border: 1px solid #fecaca;
+        }
+
+        .message.success {
+            display: block;
+            background: #f0fdf4;
+            color: #15803d;
+            border: 1px solid #bbf7d0;
+        }
+
+        .info {
+            background: #fff;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            padding: 16px;
+        }
+
+        .info-title {
+            font-weight: 800;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .info p {
+            margin: 5px 0;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: #f4f6f9;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .spinner {
+            width: 35px;
+            height: 35px;
+            border: 4px solid #d1d5db;
+            border-top-color: #111827;
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 360px) {
+            .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .operators {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <div>Chargement...</div>
+    </div>
+
+    <header class="header">
+
+        <button
+            class="back"
+            id="backButton"
+            type="button"
+        >
+            ←
+        </button>
+
+        <div class="header-title">
+            Dépôt
+        </div>
+
+    </header>
+
+    <main class="container">
+
+        <div class="intro">
+
+            <h2>Faire un dépôt</h2>
+
+            <p>
+                Ajoutez de l'argent à votre solde BMX
+                depuis votre compte Mobile Money.
+            </p>
+
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <!-- PAYS -->
+
+        <div class="card">
+
+            <div class="card-title">
+                Votre pays
+            </div>
+
+            <div class="country-box">
+
+                <div
+                    class="country-flag"
+                    id="countryFlag"
+                >
+                    🌍
+                </div>
+
+                <div>
+
+                    <div
+                        class="country-name"
+                        id="countryName"
+                    >
+                        Chargement...
+                    </div>
+
+                    <div class="country-note">
+                        Le pays est automatiquement associé
+                        à votre compte.
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- OPERATEUR -->
+
+        <div class="card">
+
+            <div class="card-title">
+                Choisissez votre opérateur
+            </div>
+
+            <div
+                class="operators"
+                id="operators"
+            ></div>
+
+        </div>
+
+        <!-- MONTANT -->
+
+        <div class="card">
+
+            <div class="card-title">
+                Montant du dépôt
+            </div>
+
+            <div class="field">
+
+                <label for="amount">
+                    Montant
+                </label>
+
+                <div class="amount-wrapper">
+
+                    <input
+                        type="number"
+                        id="amount"
+                        placeholder="5000"
+                        min="5000"
+                        step="1"
+                        inputmode="numeric"
+                    >
+
+                    <span class="currency">
+                        FCFA
+                    </span>
+
+                </div>
+
+                <div class="minimum">
+                    Dépôt minimum :
+                    <strong>5 000 FCFA</strong>
+                </div>
+
+            </div>
+
+            <button
+                class="submit"
+                id="submitButton"
+                type="button"
+            >
+                Continuer
+            </button>
+
+        </div>
+
+        <div class="info">
+
+            <div class="info-title">
+                ℹ️ Informations
+            </div>
+
+            <p>
+                • Votre demande sera enregistrée comme
+                dépôt en attente.
+            </p>
+
+            <p>
+                • Vous serez ensuite redirigé vers
+                la page sécurisée WestPay pour effectuer
+                le paiement.
+            </p>
+
+            <p>
+                • Votre solde sera crédité uniquement
+                après confirmation du paiement.
+            </p>
+
+        </div>
+
+    </main>
+
+    <script>
+
+        // ==================================================
+        // CONFIGURATION BMX
+        // ==================================================
+
+        const DEPOSIT_URL =
+            "https://rstftxtsqpstnvxyvadu.supabase.co/functions/v1/deposit";
+
+        const TOKEN_KEY = "bmx_token";
+        const USER_KEY = "bmx_user";
+
+
+        // ==================================================
+        // ELEMENTS
+        // ==================================================
+
+        const loading =
+            document.getElementById("loading");
+
+        const message =
+            document.getElementById("message");
+
+        const countryName =
+            document.getElementById("countryName");
+
+        const countryFlag =
+            document.getElementById("countryFlag");
+
+        const operatorsContainer =
+            document.getElementById("operators");
+
+        const amountInput =
+            document.getElementById("amount");
+
+        const submitButton =
+            document.getElementById("submitButton");
+
+        const backButton =
+            document.getElementById("backButton");
+
+
+        let selectedOperator = null;
+
+
+        // ==================================================
+        // PAYS
+        // ==================================================
+
+        const countryData = {
+
+            BF: {
+                name: "Burkina Faso",
+                flag: "🇧🇫",
+                operators: [
+                    {
+                        code: "ORANGE",
+                        name: "Orange Money",
+                        icon: "🟠"
+                    },
+                    {
+                        code: "MOOV",
+                        name: "Moov Money",
+                        icon: "🟢"
+                    }
+                ]
+            },
+
+            BJ: {
+                name: "Bénin",
+                flag: "🇧🇯",
+                operators: [
+                    {
+                        code: "MTN",
+                        name: "MTN Mobile Money",
+                        icon: "🟡"
+                    }
+                ]
+            },
+
+            TG: {
+                name: "Togo",
+                flag: "🇹🇬",
+                operators: [
+                    {
+                        code: "MOOV",
+                        name: "Moov Money",
+                        icon: "🟢"
+                    },
+                    {
+                        code: "TMONEY",
+                        name: "TMoney",
+                        icon: "🔵"
+                    }
+                ]
+            },
+
+            CI: {
+                name: "Côte d'Ivoire",
+                flag: "🇨🇮",
+                operators: [
+                    {
+                        code: "MTN",
+                        name: "MTN",
+                        icon: "🟡"
+                    },
+                    {
+                        code: "ORANGE",
+                        name: "Orange Money",
+                        icon: "🟠"
+                    },
+                    {
+                        code: "WAVE",
+                        name: "Wave",
+                        icon: "🔵"
+                    }
+                ]
+            }
+
+        };
+
+
+        // ==================================================
+        // MESSAGE
+        // ==================================================
+
+        function showMessage(text, type) {
+
+            message.textContent = text;
+
+            message.className =
+                "message " + type;
+
+        }
+
+
+        function hideMessage() {
+
+            message.textContent = "";
+
+            message.className =
+                "message";
+
+        }
+
+
+        // ==================================================
+        // CHARGER UTILISATEUR
+        // ==================================================
+
+        function getUser() {
+
+            const token =
+                localStorage.getItem(TOKEN_KEY);
+
+            const userData =
+                localStorage.getItem(USER_KEY);
+
+
+            if (!token || !userData) {
+
+                window.location.href =
+                    "login.html";
+
+                return null;
+
+            }
+
+
+            try {
+
+                return JSON.parse(userData);
+
+            } catch (error) {
+
+                localStorage.removeItem(TOKEN_KEY);
+
+                localStorage.removeItem(USER_KEY);
+
+                window.location.href =
+                    "login.html";
+
+                return null;
+
+            }
+
+        }
+
+
+        // ==================================================
+        // AFFICHER LES OPERATEURS
+        // ==================================================
+
+        function renderOperators(countryCode) {
+
+            operatorsContainer.innerHTML = "";
+
+            const data =
+                countryData[countryCode];
+
+
+            if (!data) {
+
+                showMessage(
+                    "Pays non pris en charge.",
+                    "error"
+                );
+
+                return;
+
+            }
+
+
+            countryName.textContent =
+                data.name;
+
+            countryFlag.textContent =
+                data.flag;
+
+
+            data.operators.forEach(function(operator) {
+
+                const button =
+                    document.createElement("button");
+
+                button.type = "button";
+
+                button.className =
+                    "operator";
+
+                button.innerHTML = `
+
+                    <div class="operator-icon">
+                        ${operator.icon}
+                    </div>
+
+                    <div class="operator-name">
+                        ${operator.name}
+                    </div>
+
+                `;
+
+
+                button.addEventListener(
+                    "click",
+                    function() {
+
+                        document
+                            .querySelectorAll(".operator")
+                            .forEach(function(item) {
+
+                                item.classList.remove(
+                                    "selected"
+                                );
+
+                            });
+
+
+                        button.classList.add(
+                            "selected"
+                        );
+
+
+                        selectedOperator =
+                            operator.code;
+
+                    }
+                );
+
+
+                operatorsContainer.appendChild(
+                    button
+                );
+
+            });
+
+        }
+
+
+        // ==================================================
+        // CREER LE DEPOT ET OUVRIR WESTPAY
+        // ==================================================
+
+        submitButton.addEventListener(
+            "click",
+            async function() {
+
+                hideMessage();
+
+
+                const token =
+                    localStorage.getItem(TOKEN_KEY);
+
+
+                if (!token) {
+
+                    window.location.href =
+                        "login.html";
+
+                    return;
+
+                }
+
+
+                if (!selectedOperator) {
+
+                    showMessage(
+                        "Veuillez choisir votre opérateur.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                const amount =
+                    Number(
+                        amountInput.value
+                    );
+
+
+                if (
+                    !Number.isFinite(amount) ||
+                    amount <= 0
+                ) {
+
+                    showMessage(
+                        "Veuillez saisir un montant valide.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (
+                    !Number.isInteger(amount)
+                ) {
+
+                    showMessage(
+                        "Le montant doit être un nombre entier.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                if (amount < 500) {
+
+                    showMessage(
+                        "Le dépôt minimum est de 500 FCFA.",
+                        "error"
+                    );
+
+                    return;
+
+                }
+
+
+                submitButton.disabled = true;
+
+                submitButton.textContent =
+                    "Préparation du paiement...";
+
+
+                try {
+
+                    const response =
+                        await fetch(
+                            DEPOSIT_URL,
+                            {
+                                method: "POST",
+
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+
+                                    "Authorization":
+                                        "Bearer " + token
+                                },
+
+                                body: JSON.stringify({
+
+                                    operator_code:
+                                        selectedOperator,
+
+                                    amount:
+                                        amount
+
+                                })
+
+                            }
+                        );
+
+
+                    let data = null;
+
+                    try {
+
+                        data =
+                            await response.json();
+
+                    } catch {
+
+                        throw new Error(
+                            "Réponse invalide du serveur."
+                        );
+
+                    }
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            data?.message ||
+                            data?.error ||
+                            "Impossible de créer le dépôt."
+                        );
+
+                    }
+
+
+                    if (!data.success) {
+
+                        throw new Error(
+                            data.message ||
+                            "La demande de dépôt a échoué."
+                        );
+
+                    }
+
+
+                    if (
+                        !data.checkout_url
+                    ) {
+
+                        throw new Error(
+                            "Le lien de paiement WestPay n'a pas été généré."
+                        );
+
+                    }
+
+
+                    /*
+                     * IMPORTANT :
+                     *
+                     * On NE crédite PAS le solde ici.
+                     *
+                     * L'utilisateur est seulement envoyé
+                     * vers WestPay.
+                     *
+                     * Le crédit du compte sera effectué
+                     * uniquement par le webhook WestPay.
+                     */
+
+
+                    submitButton.textContent =
+                        "Redirection vers WestPay...";
+
+
+                    window.location.href =
+                        data.checkout_url;
+
+
+                } catch (error) {
+
+                    console.error(
+                        "Erreur dépôt BMX :",
+                        error
+                    );
+
+
+                    showMessage(
+                        error.message ||
+                        "Une erreur est survenue.",
+                        "error"
+                    );
+
+
+                    submitButton.disabled =
+                        false;
+
+                    submitButton.textContent =
+                        "Continuer";
+
+                }
+
+            }
+        );
+
+
+        // ==================================================
+        // RETOUR
+        // ==================================================
+
+        backButton.addEventListener(
+            "click",
+            function() {
+
+                window.location.href =
+                    "dashboard.html";
+
+            }
+        );
+
+
+        // ==================================================
+        // INITIALISATION
+        // ==================================================
+
+        function init() {
+
+            const user =
+                getUser();
+
+
+            if (!user) {
+                return;
+            }
+
+
+            const countryCode =
+                String(
+                    user.country_code || ""
+                )
+                .trim()
+                .toUpperCase();
+
+
+            renderOperators(
+                countryCode
+            );
+
+
+            loading.style.display =
+                "none";
+
+        }
+
+
+        init();
+
+    </script>
+
+</body>
+</html>
